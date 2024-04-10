@@ -1,4 +1,4 @@
-namespace Talbat.APIs
+namespace Talabat.APIs
 {
 	public class WeatherForecast
 	{

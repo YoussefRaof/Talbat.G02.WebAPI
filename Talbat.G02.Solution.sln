@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Talbat.APIs", "Talbat.APIs\Talbat.APIs.csproj", "{546DF30A-9026-4847-9CB0-5D4AF64DA0C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Talabat.APIs", "Talbat.APIs\Talabat.APIs.csproj", "{546DF30A-9026-4847-9CB0-5D4AF64DA0C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Talabat.Core", "Talabat.Core\Talabat.Core.csproj", "{5599BD77-0836-4761-A81C-1F763D12CF90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Talabat.Reop", "Talabat.Reop\Talabat.Reop.csproj", "{6B055B9C-9CD7-4242-9640-6ECD0B315616}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Talabat.Service", "Talabat.Service\Talabat.Service.csproj", "{F39EAE70-9A9A-4ADA-A6E5-1A171B55E59E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{546DF30A-9026-4847-9CB0-5D4AF64DA0C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{546DF30A-9026-4847-9CB0-5D4AF64DA0C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{546DF30A-9026-4847-9CB0-5D4AF64DA0C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5599BD77-0836-4761-A81C-1F763D12CF90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5599BD77-0836-4761-A81C-1F763D12CF90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5599BD77-0836-4761-A81C-1F763D12CF90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5599BD77-0836-4761-A81C-1F763D12CF90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B055B9C-9CD7-4242-9640-6ECD0B315616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B055B9C-9CD7-4242-9640-6ECD0B315616}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B055B9C-9CD7-4242-9640-6ECD0B315616}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B055B9C-9CD7-4242-9640-6ECD0B315616}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F39EAE70-9A9A-4ADA-A6E5-1A171B55E59E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F39EAE70-9A9A-4ADA-A6E5-1A171B55E59E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F39EAE70-9A9A-4ADA-A6E5-1A171B55E59E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F39EAE70-9A9A-4ADA-A6E5-1A171B55E59E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
