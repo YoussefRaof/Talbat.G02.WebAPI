@@ -10,7 +10,7 @@ using Talabat.Reop.Data;
 
 namespace Talabat.Reop
 {
-	internal class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
+	public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 	{
 		private readonly StoreContext _dbContext;
 
