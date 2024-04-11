@@ -15,6 +15,7 @@ namespace Talabat.Reop.Data
         {
             
         }
+	
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());  

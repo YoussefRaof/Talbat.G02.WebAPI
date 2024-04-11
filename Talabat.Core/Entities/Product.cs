@@ -17,11 +17,11 @@ namespace Talabat.Core.Entities
         //[ForeignKey(nameof(Product.Brand))]
         public int BrandId { get; set; } // Forgein Key Column => ProductBrand
 
-        public ProductBrand Brand { get; set; } // Navigational Property [One]
+        public virtual ProductBrand Brand { get; set; } // Navigational Property [One]
 
 		//[ForeignKey(nameof(Product.Category))]
 		public int CategoryId { get; set; } // Forgein Key Column => ProductCategory
-		public ProductCategory Category { get; set; } // Navigational Property [One]
+		public virtual ProductCategory Category { get; set; } // Navigational Property [One]
 
 	}
 }
