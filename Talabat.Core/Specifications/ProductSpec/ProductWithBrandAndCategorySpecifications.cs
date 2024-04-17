@@ -16,5 +16,13 @@ namespace Talabat.Core.Specifications.ProductSpec
             Includes.Add(P => P.Category);
             
         }
+
+        // This Constructor Will Be Used To Create Object That Will Be Used To Get Specific Product
+        public ProductWithBrandAndCategorySpecifications(int id) :base(P => P.Id == id)
+        {
+			Includes.Add(P => P.Brand);
+			Includes.Add(P => P.Category);
+
+		}
     }
 }
