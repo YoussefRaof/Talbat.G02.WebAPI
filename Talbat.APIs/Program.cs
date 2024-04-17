@@ -32,8 +32,10 @@ namespace Talabat.APIs
 				options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
 			});
 
-			//webApplicationBuilder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles()));
-			webApplicationBuilder.Services.AddAutoMapper(typeof(MappingProfiles));
+			var Url=webApplicationBuilder.Configuration["ApiBaseUrl"];
+
+			webApplicationBuilder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles(Url)));
+			//webApplicationBuilder.Services.AddAutoMapper(typeof(MappingProfiles));
 
 			#endregion
 
