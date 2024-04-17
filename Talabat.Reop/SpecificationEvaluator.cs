@@ -22,7 +22,7 @@ namespace Talabat.Reop
 			//A. P => P.Brand
 			//B. P => P.Category
 			//
-			spec.Includes.Aggregate(query,(CurrentQuery , IncludeExpression) =>CurrentQuery.Include(IncludeExpression));
+			query =spec.Includes.Aggregate(query,(CurrentQuery , IncludeExpression) =>CurrentQuery.Include(IncludeExpression));
 			// query = _dbcontext.Set<Product>().Where( P => P.Id ==1).Include( P => P.Brand).Include( P => P.Category);
 
 
