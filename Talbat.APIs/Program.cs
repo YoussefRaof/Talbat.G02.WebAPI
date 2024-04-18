@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
+using System.Text.Json;
 using Talabat.APIs.Errors;
 using Talabat.APIs.Helpers;
 using Talabat.APIs.Middlewares;
@@ -21,7 +24,7 @@ namespace Talabat.APIs
 			// Add services to the DI container.
 
 			webApplicationBuilder.Services.AddControllers(); // Register Web API Services In DI Container
-			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+															 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			webApplicationBuilder.Services.AddEndpointsApiExplorer();
 			webApplicationBuilder.Services.AddSwaggerGen();
 
@@ -35,7 +38,7 @@ namespace Talabat.APIs
 				options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
 			});
 
-			var Url=webApplicationBuilder.Configuration["ApiBaseUrl"];
+			var Url = webApplicationBuilder.Configuration["ApiBaseUrl"];
 
 			webApplicationBuilder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles(Url)));
 			//webApplicationBuilder.Services.AddAutoMapper(typeof(MappingProfiles));
@@ -44,7 +47,7 @@ namespace Talabat.APIs
 			{
 				options.InvalidModelStateResponseFactory = (actioncontext) =>
 				{
-					var errors = actioncontext.ModelState.Where(P => P.Value.Errors.Count >0)
+					var errors = actioncontext.ModelState.Where(P => P.Value.Errors.Count > 0)
 														 .SelectMany(P => P.Value.Errors)
 														 .Select(E => E.ErrorMessage)
 														 .ToList();
@@ -72,6 +75,7 @@ namespace Talabat.APIs
 
 			var loggerFactory = services.GetRequiredService<ILoggerFactory>();
 
+			var logger = loggerFactory.CreateLogger<Program>();
 			try
 			{
 				await _dbContext.Database.MigrateAsync(); // Update-Database 
@@ -79,7 +83,6 @@ namespace Talabat.APIs
 			}
 			catch (Exception ex)
 			{
-				var logger = loggerFactory.CreateLogger<Program>();
 				logger.LogError(ex, "An Error Occured During Applying Migration");
 
 				Console.WriteLine(ex);
@@ -90,7 +93,10 @@ namespace Talabat.APIs
 			#region Configure Kestral Middlewares
 
 			app.UseMiddleware<ExceptionMiddleware>();
+
+
 			
+
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
 			{
@@ -101,7 +107,7 @@ namespace Talabat.APIs
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 
-			
+
 			//app.UseRouting();
 			//app.UseEndpoints(endpoints =>
 			//{
@@ -114,7 +120,7 @@ namespace Talabat.APIs
 
 			//});
 
-			app.MapControllers(); 
+			app.MapControllers();
 			#endregion
 
 			app.Run();
