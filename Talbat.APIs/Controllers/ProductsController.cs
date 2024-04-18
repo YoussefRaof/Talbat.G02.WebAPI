@@ -31,7 +31,7 @@ namespace Talabat.APIs.Controllers
 			return Ok(_mapper.Map<IEnumerable<Product>,IEnumerable<ProductToReturnDto>>(products));
 		}
 
-		// baseurl/apiProducts/1
+		// baseurl/api/products/1
 
 		[ProducesResponseType(typeof(ProductToReturnDto),StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ApiResponse),StatusCodes.Status404NotFound)]
