@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Text.Json;
 using Talabat.APIs.Errors;
+using Talabat.APIs.Extensions;
 using Talabat.APIs.Helpers;
 using Talabat.APIs.Middlewares;
 using Talabat.Core.Entities;
@@ -25,41 +26,30 @@ namespace Talabat.APIs
 
 			webApplicationBuilder.Services.AddControllers(); // Register Web API Services In DI Container
 															 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-			webApplicationBuilder.Services.AddEndpointsApiExplorer();
-			webApplicationBuilder.Services.AddSwaggerGen();
+
+
+			webApplicationBuilder.Services.AddSwaggerServices();
 
 			//webApplicationBuilder.Services.AddScoped<IGenericRepository<Product>, GenericRepository<Product>>();
 			//webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductBrand>, GenericRepository<ProductBrand>>();
 			//webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductCategory>, GenericRepository<ProductCategory>>();
-			webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+
+			var Url = webApplicationBuilder.Configuration["ApiBaseUrl"];
+			webApplicationBuilder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles(Url)));
+			//webApplicationBuilder.Services.AddAutoMapper(typeof(MappingProfiles));
 
 			webApplicationBuilder.Services.AddDbContext<StoreContext>(options =>
 			{
 				options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
 			});
+			
 
-			var Url = webApplicationBuilder.Configuration["ApiBaseUrl"];
+			webApplicationBuilder.Services.AddApplicationServices();
 
-			webApplicationBuilder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles(Url)));
-			//webApplicationBuilder.Services.AddAutoMapper(typeof(MappingProfiles));
 
-			webApplicationBuilder.Services.Configure<ApiBehaviorOptions>(options =>
-			{
-				options.InvalidModelStateResponseFactory = (actioncontext) =>
-				{
-					var errors = actioncontext.ModelState.Where(P => P.Value.Errors.Count > 0)
-														 .SelectMany(P => P.Value.Errors)
-														 .Select(E => E.ErrorMessage)
-														 .ToList();
 
-					var response = new ApiValidationErrorResponse()
-					{
-						Errors = errors
-					};
 
-					return new BadRequestObjectResult(response);
-				};
-			});
 
 
 			#endregion
@@ -100,8 +90,7 @@ namespace Talabat.APIs
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
 			{
-				app.UseSwagger();
-				app.UseSwaggerUI();
+				app.UseSwaggerMiddlewares();
 			}
 			app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
