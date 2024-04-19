@@ -1,4 +1,12 @@
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
+using System.Text.Json;
+using Talabat.APIs.Errors;
+using Talabat.APIs.Extensions;
+using Talabat.APIs.Helpers;
+using Talabat.APIs.Middlewares;
 using Talabat.Core.Entities;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Reop;
@@ -17,19 +25,33 @@ namespace Talabat.APIs
 			// Add services to the DI container.
 
 			webApplicationBuilder.Services.AddControllers(); // Register Web API Services In DI Container
-			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-			webApplicationBuilder.Services.AddEndpointsApiExplorer();
-			webApplicationBuilder.Services.AddSwaggerGen();
+															 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+
+			webApplicationBuilder.Services.AddSwaggerServices();
 
 			//webApplicationBuilder.Services.AddScoped<IGenericRepository<Product>, GenericRepository<Product>>();
 			//webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductBrand>, GenericRepository<ProductBrand>>();
 			//webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductCategory>, GenericRepository<ProductCategory>>();
-			webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+
+			var Url = webApplicationBuilder.Configuration["ApiBaseUrl"];
+			webApplicationBuilder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles(Url)));
+			//webApplicationBuilder.Services.AddAutoMapper(typeof(MappingProfiles));
 
 			webApplicationBuilder.Services.AddDbContext<StoreContext>(options =>
 			{
 				options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
 			});
+			
+
+			webApplicationBuilder.Services.AddApplicationServices();
+
+
+
+
+
+
 			#endregion
 
 			var app = webApplicationBuilder.Build();
@@ -43,6 +65,7 @@ namespace Talabat.APIs
 
 			var loggerFactory = services.GetRequiredService<ILoggerFactory>();
 
+			var logger = loggerFactory.CreateLogger<Program>();
 			try
 			{
 				await _dbContext.Database.MigrateAsync(); // Update-Database 
@@ -50,7 +73,6 @@ namespace Talabat.APIs
 			}
 			catch (Exception ex)
 			{
-				var logger = loggerFactory.CreateLogger<Program>();
 				logger.LogError(ex, "An Error Occured During Applying Migration");
 
 				Console.WriteLine(ex);
@@ -59,16 +81,23 @@ namespace Talabat.APIs
 
 
 			#region Configure Kestral Middlewares
+
+			app.UseMiddleware<ExceptionMiddleware>();
+
+
+			
+
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
 			{
-				app.UseSwagger();
-				app.UseSwaggerUI();
+				app.UseSwaggerMiddlewares();
 			}
+			app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
 			app.UseHttpsRedirection();
+			app.UseStaticFiles();
 
-			
+
 			//app.UseRouting();
 			//app.UseEndpoints(endpoints =>
 			//{
@@ -81,7 +110,7 @@ namespace Talabat.APIs
 
 			//});
 
-			app.MapControllers(); 
+			app.MapControllers();
 			#endregion
 
 			app.Run();
