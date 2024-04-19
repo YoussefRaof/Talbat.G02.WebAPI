@@ -12,9 +12,9 @@ namespace Talabat.Core.Repositories.Contract
 	{
 		Task<T?> GetAsync(int id);
 
-		Task<IEnumerable<T>> GetAllAsync();
+		Task<IReadOnlyList<T>> GetAllAsync();
 
-		Task<IEnumerable<T>> GetAllWithSpecsAsync(ISpecifications<T> spec);
+		Task<IReadOnlyList<T>> GetAllWithSpecsAsync(ISpecifications<T> spec);
 		Task<T?> GetWithSpec (ISpecifications<T> spec);
 
 	}
