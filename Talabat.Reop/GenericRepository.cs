@@ -31,7 +31,7 @@ namespace Talabat.Reop
 		public async Task<IReadOnlyList<T>> GetAllAsync()
 		{
 			//if (typeof(T) == typeof(Product))
-			//	return (IEnumerable<T>)await _dbContext.Set<Product>().Include(P => P.Brand).Include(P => P.Category).ToListAsync();
+			//	return (IEnumerable<T>)await _dbContext.Set<Product>().OrderBy(P =>P.Name).Include(P => P.Brand).Include(P => P.Category).ToListAsync();
 			return await _dbContext.Set<T>().AsNoTracking().ToListAsync();
 		}
 
