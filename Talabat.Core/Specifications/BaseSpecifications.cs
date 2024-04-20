@@ -22,7 +22,7 @@ namespace Talabat.Core.Specifications
         public BaseSpecifications(Expression<Func<T, bool>> criteriaExpression)
         {
 
-            Criteria = criteriaExpression; // P => P.Id ==2
+            Criteria = criteriaExpression; // P=>P.BrandId =2 & True
         }
         public void AddOrderBy(Expression<Func<T, object>> orderbyExpression)
         {
