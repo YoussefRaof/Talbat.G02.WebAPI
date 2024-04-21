@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using Talabat.APIs.DTOs;
 using Talabat.APIs.Errors;
+using Talabat.APIs.Helpers;
 using Talabat.Core.Entities;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Core.Specifications;
@@ -30,11 +31,17 @@ namespace Talabat.APIs.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProducts([FromQuery]ProductSpecParams specParams)
+		public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts([FromQuery] ProductSpecParams specParams)
 		{
 			var spec = new ProductWithBrandAndCategorySpecifications(specParams);
 			var products = await _productsReop.GetAllWithSpecsAsync(spec);
-				return Ok(_mapper.Map<IReadOnlyList<Product>, IEnumerable<ProductToReturnDto>>(products));
+			var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(products);
+
+			var countspec = new ProductWithFilterationForCountSpecifications(specParams);
+
+			var count = await _productsReop.GetCountAsync(countspec); 
+
+			return Ok(new Pagination<ProductToReturnDto>(specParams.PageIndex, specParams.PageSize,count,data));
 		}
 
 		// baseurl/api/products/1
@@ -60,7 +67,7 @@ namespace Talabat.APIs.Controllers
 
 			return Ok(brands);
 		}
-			
+
 		[HttpGet("categories")] //GET: /api/products/categories
 
 		public async Task<ActionResult<IReadOnlyList<ProductCategory>>> GetCategories()

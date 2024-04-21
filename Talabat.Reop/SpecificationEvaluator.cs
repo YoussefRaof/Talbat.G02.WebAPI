@@ -15,7 +15,7 @@ namespace Talabat.Reop
 		{
 			var query = inputQuery; //_dbcontext.Set<Product>();
 
-			if(spec.Criteria is not null) // //_dbcontext.Set<Product>().Where( // P=> True & True);
+			if(spec.Criteria is not null) // //_dbcontext.Set<Product>().;
 				query = query.Where(spec.Criteria); 
 
 			if(spec.OrderBy is not null) 
