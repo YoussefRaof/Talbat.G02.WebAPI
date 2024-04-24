@@ -15,15 +15,26 @@ namespace Talabat.Reop
 		{
 			var query = inputQuery; //_dbcontext.Set<Product>();
 
-			if(spec.Criteria is not null) // P => P.Id ==1
-				query = query.Where(spec.Criteria); // query = _dbcontext.Set<Product>().Where( P => P.Id ==1);
+			if(spec.Criteria is not null) // //_dbcontext.Set<Product>().;
+				query = query.Where(spec.Criteria); 
 
+			if(spec.OrderBy is not null) 
+				query = query.OrderBy(spec.OrderBy);//_dbcontext.Set<Product>().Where( // P=> True & True).OrderBy(P=>P.Name);
+
+			else if(spec.OrderByDesc is not null) // P => P.Price
+				query = query.OrderByDescending(spec.OrderByDesc);
+
+			if(spec.IsPaginationEnabled)
+				query = query.Skip(spec.Skip).Take(spec.Take);//_dbcontext.Set<Product>().Where(P=> True & True).OrderBy(P=>P.Name).Skip(5).Take(5);
+
+
+			//_dbcontext.Set<Product>().Where( P=>P.BrandId =2 & True).OrderBy(P =>P.Name)
 			//Includes
 			//A. P => P.Brand
 			//B. P => P.Category
 			//
-			query =spec.Includes.Aggregate(query,(CurrentQuery , IncludeExpression) =>CurrentQuery.Include(IncludeExpression));
-			// query = _dbcontext.Set<Product>().Where( P => P.Id ==1).Include( P => P.Brand).Include( P => P.Category);
+			query = spec.Includes.Aggregate(query,(CurrentQuery , IncludeExpression) =>CurrentQuery.Include(IncludeExpression));
+			//_dbcontext.Set<Product>().Where(P=> True & True).OrderBy(P=>P.Name).Skip(5).Take(5).Include(P=>P.Brand).(P=>P.Category);
 
 
 			return query;
