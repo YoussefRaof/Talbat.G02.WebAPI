@@ -16,9 +16,9 @@ namespace Talabat.Reop._Identity
 			{
 				var user = new ApplicationUser()
 				{
-					DisplayName = "Youssef Raof",
-					Email = "youssefroaf93@gmail.com",
-					UserName = "youssef.raof",
+					DisplayName = "Ahmed Nasr",
+					Email = "ahmed.nasr@linkdev.com",
+					UserName = "ahmed.nasr",
 					PhoneNumber = "01006103731",
 
 				};
