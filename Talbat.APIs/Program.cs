@@ -11,6 +11,7 @@ using Talabat.APIs.Middlewares;
 using Talabat.Core.Entities;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Reop;
+using Talabat.Reop._Identity;
 using Talabat.Reop.Data;
 
 namespace Talabat.APIs
@@ -45,6 +46,12 @@ namespace Talabat.APIs
 				options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
 			});
 
+			webApplicationBuilder.Services.AddDbContext<ApplicationIdentityDbContext>(options =>
+			{
+				options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("IdentityConnection"));
+			});
+
+
 			webApplicationBuilder.Services.AddSingleton<IConnectionMultiplexer>((serviceprovider) =>
 			{
 				var connection = webApplicationBuilder.Configuration.GetConnectionString("Redis");
@@ -67,6 +74,7 @@ namespace Talabat.APIs
 			var services = scope.ServiceProvider;
 
 			var _dbContext = services.GetRequiredService<StoreContext>();
+			var _identity = services.GetRequiredService<ApplicationIdentityDbContext>();// Ask CLR For Creating Object From ApplicationIdentityDbContext Explicitly
 			// Ask CLR For Creating Object From DbContext Explicitly
 
 			var loggerFactory = services.GetRequiredService<ILoggerFactory>();
@@ -76,6 +84,7 @@ namespace Talabat.APIs
 			{
 				await _dbContext.Database.MigrateAsync(); // Update-Database 
 				await StoreContextSeed.SeedAsync(_dbContext);
+				await _identity.Database.MigrateAsync();
 			}
 			catch (Exception ex)
 			{

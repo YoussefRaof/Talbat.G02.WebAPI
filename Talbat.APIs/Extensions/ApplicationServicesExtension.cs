@@ -6,6 +6,8 @@ using Talabat.Reop.Data;
 using Talabat.Reop;
 using System;
 using Talabat.APIs.Errors;
+using Talabat.Reop._Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Talabat.APIs.Extensions
 {
@@ -34,6 +36,8 @@ namespace Talabat.APIs.Extensions
 					return new BadRequestObjectResult(response);
 				};
 			});
+
+
 
 			return services;
 
