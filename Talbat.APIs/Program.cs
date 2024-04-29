@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
@@ -9,6 +10,7 @@ using Talabat.APIs.Extensions;
 using Talabat.APIs.Helpers;
 using Talabat.APIs.Middlewares;
 using Talabat.Core.Entities;
+using Talabat.Core.Entities.Identity;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Reop;
 using Talabat.Reop._Identity;
@@ -51,6 +53,8 @@ namespace Talabat.APIs
 				options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("IdentityConnection"));
 			});
 
+			
+
 
 			webApplicationBuilder.Services.AddSingleton<IConnectionMultiplexer>((serviceprovider) =>
 			{
@@ -61,6 +65,15 @@ namespace Talabat.APIs
 			webApplicationBuilder.Services.AddApplicationServices();
 
 
+			webApplicationBuilder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+			{
+				//options.Password.RequiredUniqueChars = 2;
+				//options.Password.RequireDigit = true;
+				//options.Password.RequireLowercase = true;
+				//options.Password.RequireUppercase = true;
+			})
+				.AddEntityFrameworkStores<ApplicationIdentityDbContext>();
+
 
 
 
@@ -69,13 +82,17 @@ namespace Talabat.APIs
 
 			var app = webApplicationBuilder.Build();
 
+			#region Update Database & DataSeeding
 			using var scope = app.Services.CreateScope();
 
 			var services = scope.ServiceProvider;
 
 			var _dbContext = services.GetRequiredService<StoreContext>();
+
+
+
 			var _identity = services.GetRequiredService<ApplicationIdentityDbContext>();// Ask CLR For Creating Object From ApplicationIdentityDbContext Explicitly
-			// Ask CLR For Creating Object From DbContext Explicitly
+																						// Ask CLR For Creating Object From DbContext Explicitly
 
 			var loggerFactory = services.GetRequiredService<ILoggerFactory>();
 
@@ -84,6 +101,9 @@ namespace Talabat.APIs
 			{
 				await _dbContext.Database.MigrateAsync(); // Update-Database 
 				await StoreContextSeed.SeedAsync(_dbContext);
+
+				var _usermanager = services.GetRequiredService<UserManager<ApplicationUser>>();
+				await ApplicationIdentityContextDataSeed.SeedUsersAsync(_usermanager);
 				await _identity.Database.MigrateAsync();
 			}
 			catch (Exception ex)
@@ -91,7 +111,8 @@ namespace Talabat.APIs
 				logger.LogError(ex, "An Error Occured During Applying Migration");
 
 				Console.WriteLine(ex);
-			}
+			} 
+			#endregion
 
 
 
