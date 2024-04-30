@@ -50,12 +50,12 @@ namespace Talabat.APIs.Extensions
 			 
 
 		}
-		public static IServiceCollection AddAuthService (this IServiceCollection services ,IConfiguration configuration)
+		public static IServiceCollection AddAuthService(this IServiceCollection services, IConfiguration configuration)
 		{
 			services.AddAuthentication(/*JwtBearerDefaults.AuthenticationScheme*/options =>
 			{
 				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 			})
 			.AddJwtBearer("Bearer", options =>
 			{
@@ -71,7 +71,6 @@ namespace Talabat.APIs.Extensions
 					ClockSkew = TimeSpan.Zero
 				};
 			});
-
 			return services;
 
 		}

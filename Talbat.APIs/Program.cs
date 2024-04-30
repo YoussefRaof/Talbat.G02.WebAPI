@@ -78,7 +78,7 @@ namespace Talabat.APIs
 				.AddEntityFrameworkStores<ApplicationIdentityDbContext>();
 
 			webApplicationBuilder.Services.AddAuthService(webApplicationBuilder.Configuration);
-			
+
 
 
 
