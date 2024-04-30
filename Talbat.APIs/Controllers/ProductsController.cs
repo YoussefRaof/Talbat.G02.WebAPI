@@ -32,8 +32,8 @@ namespace Talabat.APIs.Controllers
 			_categoryRepo = categoryRepo;
 		}
 
+		[Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
 		[HttpGet]
-		[Authorize]
 		public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts([FromQuery] ProductSpecParams specParams)
 		{
 			var spec = new ProductWithBrandAndCategorySpecifications(specParams);
