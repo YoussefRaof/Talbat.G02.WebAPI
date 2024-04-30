@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 using System.Net;
+using System.Text;
 using System.Text.Json;
 using Talabat.APIs.Errors;
 using Talabat.APIs.Extensions;
@@ -53,7 +56,7 @@ namespace Talabat.APIs
 				options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("IdentityConnection"));
 			});
 
-			
+
 
 
 			webApplicationBuilder.Services.AddSingleton<IConnectionMultiplexer>((serviceprovider) =>
@@ -74,6 +77,8 @@ namespace Talabat.APIs
 			})
 				.AddEntityFrameworkStores<ApplicationIdentityDbContext>();
 
+			webApplicationBuilder.Services.AddAuthService(webApplicationBuilder.Configuration);
+			
 
 
 
@@ -111,7 +116,7 @@ namespace Talabat.APIs
 				logger.LogError(ex, "An Error Occured During Applying Migration");
 
 				Console.WriteLine(ex);
-			} 
+			}
 			#endregion
 
 
@@ -120,8 +125,9 @@ namespace Talabat.APIs
 
 			app.UseMiddleware<ExceptionMiddleware>();
 
+			app.UseAuthorization();
+			app.UseAuthentication();
 
-			
 
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
