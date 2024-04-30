@@ -52,12 +52,14 @@ namespace Talabat.APIs.Extensions
 		}
 		public static IServiceCollection AddAuthService(this IServiceCollection services, IConfiguration configuration)
 		{
+			services.AddScoped(typeof(IAuthService), typeof(AuthService));
+
 			services.AddAuthentication(/*JwtBearerDefaults.AuthenticationScheme*/options =>
 			{
 				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 			})
-			.AddJwtBearer("Bearer", options =>
+			.AddJwtBearer(/*"Bearer",*/ options =>
 			{
 				options.TokenValidationParameters = new TokenValidationParameters()
 				{
