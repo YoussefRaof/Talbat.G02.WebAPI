@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using StackExchange.Redis;
 using System.Net;
 using System.Text;
@@ -31,8 +32,11 @@ namespace Talabat.APIs
 
 			// Add services to the DI container.
 
-			webApplicationBuilder.Services.AddControllers(); // Register Web API Services In DI Container
-															 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+			webApplicationBuilder.Services.AddControllers().AddNewtonsoftJson(options =>
+			{
+				options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+			}); // Register Web API Services In DI Container
+				// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 
 			webApplicationBuilder.Services.AddSwaggerServices();
