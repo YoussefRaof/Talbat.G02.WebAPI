@@ -18,10 +18,10 @@ namespace Talabat.Core.Entities.Order_Aggregate
 
         public Address ShippingAddress { get; set; } = null!;
 
-		public DeliveryMethod DeliveryMethod { get; set; } = null!; // Navigational Property [ONE] 
+		public virtual DeliveryMethod? DeliveryMethod { get; set; } = null!; // Navigational Property [ONE] 
 																	//public int DeliveryMethodId { get; set; } // Foregin Key
 
-		public ICollection<OrderItem> Items { get; set; } = new HashSet<OrderItem>(); // Navigational Property [Many]
+		public virtual ICollection<OrderItem> Items { get; set; } = new HashSet<OrderItem>(); // Navigational Property [Many]
 
         public decimal SubTotal { get; set; } // Total Without Delivery Cost
 

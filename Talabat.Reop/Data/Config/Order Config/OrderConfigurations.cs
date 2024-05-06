@@ -20,8 +20,13 @@ namespace Talabat.Reop.Data.Config.Order_Config
 				(ostatus) => (OrderStatus) Enum.Parse(typeof(OrderStatus),ostatus)
 				);
 
-			//builder.HasOne(O => O.DeliveryMethod)
-			//	.WithMany();
+			builder.HasOne(O => O.DeliveryMethod)
+				.WithMany()
+				.OnDelete(DeleteBehavior.SetNull);
+
+			builder.HasMany(o => o.Items)
+				.WithOne()
+				.OnDelete(DeleteBehavior.Cascade);
 
 
 			//builder.HasOne(O => O.DeliveryMethod)
