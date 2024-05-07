@@ -13,6 +13,7 @@ using Talabat.Service.AuthService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Talabat.Core.UnitOfWork.Contract;
 
 namespace Talabat.APIs.Extensions
 {
@@ -21,6 +22,7 @@ namespace Talabat.APIs.Extensions
 		public static IServiceCollection AddApplicationServices(this IServiceCollection services)
 		{
 			services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+			services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 			services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));
 			services.AddScoped(typeof(IAuthService), typeof(AuthService));
 
