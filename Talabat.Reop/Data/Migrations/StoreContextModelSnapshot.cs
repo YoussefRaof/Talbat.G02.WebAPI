@@ -47,7 +47,7 @@ namespace Talabat.Reop.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DeliveryMethods");
+                    b.ToTable("DeliveryMethods", (string)null);
                 });
 
             modelBuilder.Entity("Talabat.Core.Entities.Order_Aggregate.Order", b =>
@@ -83,7 +83,7 @@ namespace Talabat.Reop.Data.Migrations
 
                     b.HasIndex("DeliveryMethodId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("Talabat.Core.Entities.Order_Aggregate.OrderItem", b =>
@@ -107,7 +107,7 @@ namespace Talabat.Reop.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItems", (string)null);
                 });
 
             modelBuilder.Entity("Talabat.Core.Entities.Product", b =>
@@ -146,7 +146,7 @@ namespace Talabat.Reop.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Talabat.Core.Entities.ProductBrand", b =>
@@ -163,7 +163,7 @@ namespace Talabat.Reop.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductBrands");
+                    b.ToTable("ProductBrands", (string)null);
                 });
 
             modelBuilder.Entity("Talabat.Core.Entities.ProductCategory", b =>
@@ -180,7 +180,7 @@ namespace Talabat.Reop.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductCategories");
+                    b.ToTable("ProductCategories", (string)null);
                 });
 
             modelBuilder.Entity("Talabat.Core.Entities.Order_Aggregate.Order", b =>
@@ -190,7 +190,7 @@ namespace Talabat.Reop.Data.Migrations
                         .HasForeignKey("DeliveryMethodId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.OwnsOne("Talabat.Core.Entities.Order_Aggregate.Address", "ShippingAddress", b1 =>
+                    b.OwnsOne("Talabat.Core.Entities.Order_Aggregate.Order.ShippingAddress#Talabat.Core.Entities.Order_Aggregate.Address", "ShippingAddress", b1 =>
                         {
                             b1.Property<int>("OrderId")
                                 .HasColumnType("int");
@@ -217,7 +217,7 @@ namespace Talabat.Reop.Data.Migrations
 
                             b1.HasKey("OrderId");
 
-                            b1.ToTable("Orders");
+                            b1.ToTable("Orders", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderId");
@@ -236,7 +236,7 @@ namespace Talabat.Reop.Data.Migrations
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.OwnsOne("Talabat.Core.Entities.Order_Aggregate.ProductItemOrdered", "Product", b1 =>
+                    b.OwnsOne("Talabat.Core.Entities.Order_Aggregate.OrderItem.Product#Talabat.Core.Entities.Order_Aggregate.ProductItemOrdered", "Product", b1 =>
                         {
                             b1.Property<int>("OrderItemId")
                                 .HasColumnType("int");
@@ -254,7 +254,7 @@ namespace Talabat.Reop.Data.Migrations
 
                             b1.HasKey("OrderItemId");
 
-                            b1.ToTable("OrderItems");
+                            b1.ToTable("OrderItems", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderItemId");

@@ -54,5 +54,14 @@ namespace Talabat.Reop
 		{
 			return await ApplySpecifications(spec).CountAsync();
 		}
+
+		public void Add(T Entity)
+			=> _dbContext.Add(Entity);
+
+		public void Update(T Entity)
+			=> _dbContext.Set<T>().Update(Entity);
+
+		public void Delete(T Entity)
+			=> _dbContext.Set<T>().Remove(Entity);
 	}
 }

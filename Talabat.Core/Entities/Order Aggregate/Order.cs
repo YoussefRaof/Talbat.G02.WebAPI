@@ -10,6 +10,22 @@ namespace Talabat.Core.Entities.Order_Aggregate
 {
 	public class Order : BaseEntity
 	{
+	
+        public Order(string buyerEmail, Address shippingAddress, int? deliveryMethodId, ICollection<OrderItem> items, decimal subTotal)
+		{
+			BuyerEmail = buyerEmail;
+			ShippingAddress = shippingAddress;
+			DeliveryMethodId = deliveryMethodId;
+			Items = items;
+			SubTotal = subTotal;
+		}
+
+		//There is must be an Empty Parameterless Constructor For Classes That Will Be Domain [Table] In Database
+		private Order()
+		{
+
+		}
+
 		public string BuyerEmail { get; set; } = null!;
 
         public DateTimeOffset OrderDate { get; set; }  = DateTimeOffset.UtcNow;
@@ -19,7 +35,7 @@ namespace Talabat.Core.Entities.Order_Aggregate
         public Address ShippingAddress { get; set; } = null!;
 
 		public virtual DeliveryMethod? DeliveryMethod { get; set; } = null!; // Navigational Property [ONE] 
-																	//public int DeliveryMethodId { get; set; } // Foregin Key
+		public int? DeliveryMethodId { get; set; } // Foregin Key
 
 		public virtual ICollection<OrderItem> Items { get; set; } = new HashSet<OrderItem>(); // Navigational Property [Many]
 
