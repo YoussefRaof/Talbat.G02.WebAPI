@@ -41,9 +41,8 @@ namespace Talabat.APIs
 
 			webApplicationBuilder.Services.AddSwaggerServices();
 
-			//webApplicationBuilder.Services.AddScoped<IGenericRepository<Product>, GenericRepository<Product>>();
-			//webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductBrand>, GenericRepository<ProductBrand>>();
-			//webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductCategory>, GenericRepository<ProductCategory>>();
+			webApplicationBuilder.Services.AddApplicationServices();
+
 
 
 			var Url = webApplicationBuilder.Configuration["ApiBaseUrl"];
@@ -69,7 +68,6 @@ namespace Talabat.APIs
 				return ConnectionMultiplexer.Connect(connection);
 			});
 
-			webApplicationBuilder.Services.AddApplicationServices();
 
 
 			webApplicationBuilder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>

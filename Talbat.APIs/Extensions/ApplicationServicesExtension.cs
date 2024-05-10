@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Talabat.Core.UnitOfWork.Contract;
+using Talabat.Service.OrderService;
 
 namespace Talabat.APIs.Extensions
 {
@@ -21,10 +22,12 @@ namespace Talabat.APIs.Extensions
 	{
 		public static IServiceCollection AddApplicationServices(this IServiceCollection services)
 		{
+			services.AddScoped(typeof(IOrderService),typeof(OrderService));	
+
 			services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 			services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 			services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));
-			services.AddScoped(typeof(IAuthService), typeof(AuthService));
+			
 
 			services.Configure<ApiBehaviorOptions>(options =>
 			{
@@ -44,6 +47,8 @@ namespace Talabat.APIs.Extensions
 				};
 			});
 
+			
+
 
 
 			return services;
@@ -54,14 +59,13 @@ namespace Talabat.APIs.Extensions
 		}
 		public static IServiceCollection AddAuthService(this IServiceCollection services, IConfiguration configuration)
 		{
-			services.AddScoped(typeof(IAuthService), typeof(AuthService));
 
-			services.AddAuthentication(/*JwtBearerDefaults.AuthenticationScheme*/options =>
+			services.AddAuthentication(options =>
 			{
 				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 			})
-			.AddJwtBearer(/*"Bearer",*/ options =>
+			.AddJwtBearer( options =>
 			{
 				options.TokenValidationParameters = new TokenValidationParameters()
 				{
@@ -75,6 +79,8 @@ namespace Talabat.APIs.Extensions
 					ClockSkew = TimeSpan.Zero
 				};
 			});
+			services.AddScoped(typeof(IAuthService), typeof(AuthService));
+
 			return services;
 
 		}

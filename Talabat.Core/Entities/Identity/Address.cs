@@ -10,7 +10,7 @@ namespace Talabat.Core.Entities.Identity
         public string Street { get; set; } = null!;
 
         public string City { get; set; } = null!;
-        public string Counrty { get; set; } = null!;
+        public string Country { get; set; } = null!;
 		//[JsonIgnore]
 		public ApplicationUser User { get; set; }= null!; // Navigational Propery [ONE]
 		//[JsonIgnore]

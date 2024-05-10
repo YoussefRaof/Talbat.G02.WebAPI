@@ -17,7 +17,7 @@ namespace Talabat.APIs.DTOs
 
 		public string City { get; set; } = null!;
 		[Required]
-		public string Counrty { get; set; } = null!;
+		public string Country { get; set; } = null!;
 
 	}
 }
