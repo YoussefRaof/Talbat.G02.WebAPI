@@ -26,7 +26,8 @@ namespace Talabat.APIs.Controllers
 
 		[ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-		//POST  :  /api/Orders
+		[ApiExplorerSettings(IgnoreApi = true)] // 
+												//POST  :  /api/Orders
 		[HttpPost]
 
 		public async Task<ActionResult<Order>> CreateOrder(OrderDto orderDto)
