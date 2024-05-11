@@ -11,11 +11,11 @@ namespace Talabat.Core.Entities.Order_Aggregate
 	public class Order : BaseEntity
 	{
 	
-        public Order(string buyerEmail, Address shippingAddress, int? deliveryMethodId, ICollection<OrderItem> items, decimal subTotal)
+        public Order(string buyerEmail, Address shippingAddress, DeliveryMethod? deliveryMethod, ICollection<OrderItem> items, decimal subTotal)
 		{
 			BuyerEmail = buyerEmail;
 			ShippingAddress = shippingAddress;
-			DeliveryMethodId = deliveryMethodId;
+			DeliveryMethod = deliveryMethod;
 			Items = items;
 			SubTotal = subTotal;
 		}
@@ -35,7 +35,7 @@ namespace Talabat.Core.Entities.Order_Aggregate
         public Address ShippingAddress { get; set; } = null!;
 
 		public virtual DeliveryMethod? DeliveryMethod { get; set; } = null!; // Navigational Property [ONE] 
-		public int? DeliveryMethodId { get; set; } // Foregin Key
+		//public int? DeliveryMethodId { get; set; } // Foregin Key
 
 		public virtual ICollection<OrderItem> Items { get; set; } = new HashSet<OrderItem>(); // Navigational Property [Many]
 
