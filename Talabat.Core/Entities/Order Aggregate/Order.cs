@@ -21,7 +21,7 @@ namespace Talabat.Core.Entities.Order_Aggregate
 		}
 
 		//There is must be an Empty Parameterless Constructor For Classes That Will Be Domain [Table] In Database
-		private Order()
+		public Order()
 		{
 
 		}

@@ -9,7 +9,7 @@ namespace Talabat.Core.Entities.Order_Aggregate
 	public class ProductItemOrdered
 	{
 		// Constructor For Ef Core
-        private ProductItemOrdered()
+        public ProductItemOrdered()
         {
             
         }

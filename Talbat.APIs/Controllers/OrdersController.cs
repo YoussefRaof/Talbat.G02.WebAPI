@@ -8,10 +8,11 @@ using Talabat.APIs.DTOs;
 using Talabat.APIs.Errors;
 using Talabat.Core.Entities.Order_Aggregate;
 using Talabat.Core.Services.Contract;
+using Talabat.Core.Specifications.OrderSpec;
 
 namespace Talabat.APIs.Controllers
 {
-	[Authorize (AuthenticationSchemes ="Bearer")]
+	[ApiExplorerSettings(IgnoreApi = true)]
 	public class OrdersController : BaseApiController
 	{
 		private readonly IOrderService _orderService;
@@ -24,10 +25,12 @@ namespace Talabat.APIs.Controllers
 		}
 
 
+		[Authorize(AuthenticationSchemes = "Bearer")]
+
 		[ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-		[ApiExplorerSettings(IgnoreApi = true)] // 
-												//POST  :  /api/Orders
+		// To Ignore Swagger Documentation 
+		//POST  :  /api/Orders
 		[HttpPost]
 
 		public async Task<ActionResult<Order>> CreateOrder(OrderDto orderDto)
@@ -35,7 +38,7 @@ namespace Talabat.APIs.Controllers
 
 			var address = _mapper.Map<AddressDto, Address>(orderDto.ShippingAddress);
 
-			var email = User.FindFirst(ClaimTypes.Email).Value;
+			var email = User.FindFirstValue(ClaimTypes.Email);
 
 			var order = await _orderService.CreateOrderAsync(orderDto.BasketId, address, email, orderDto.DeliveryMethodId);
 
@@ -44,5 +47,24 @@ namespace Talabat.APIs.Controllers
 
 			return Ok(order);
 		}
+
+		[HttpGet]
+		[Authorize(AuthenticationSchemes = "Bearer")]
+		[ApiExplorerSettings(IgnoreApi = true)] // To Ignore Swagger Documentation 
+
+		public async Task<ActionResult<IReadOnlyList<Order>>> GetOrdersForUser()
+		{
+			var email = User.FindFirstValue(ClaimTypes.Email);
+
+			var orders = await _orderService.GetOrdersForUserAsync(email);
+
+
+
+			
+
+			return Ok(orders);
+
+		}
+
 	}
 }

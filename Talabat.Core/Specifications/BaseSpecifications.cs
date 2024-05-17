@@ -25,8 +25,8 @@ namespace Talabat.Core.Specifications
         public BaseSpecifications(Expression<Func<T, bool>> criteriaExpression)
         {
 
-            Criteria = criteriaExpression; // P=>True &&True
-        }
+            Criteria = criteriaExpression; //O => O.BuyerEmail == buyerEmail
+		}
         public void AddOrderBy(Expression<Func<T, object>> orderbyExpression)
         {
             OrderBy = orderbyExpression;

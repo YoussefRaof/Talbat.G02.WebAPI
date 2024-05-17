@@ -13,16 +13,16 @@ namespace Talabat.Reop
 	{
 		public static IQueryable<TEntity> GetQuery(IQueryable<TEntity> inputQuery , ISpecifications<TEntity> spec) 
 		{
-			var query = inputQuery; //_dbcontext.Set<Product>();
+			var query = inputQuery; //_dbcontext.Set<Order>();
 
-			if(spec.Criteria is not null) // //_dbcontext.Set<Product>().;
+			if(spec.Criteria is not null)  //_dbcontext.Set<Order>().Where(O => O.BuyerEmail == buyerEmail);
 				query = query.Where(spec.Criteria); 
 
 			if(spec.OrderBy is not null) 
-				query = query.OrderBy(spec.OrderBy);//_dbcontext.Set<Product>().Where( // P=> True & True).OrderBy(P=>P.Name);
+				query = query.OrderBy(spec.OrderBy);
 
 			else if(spec.OrderByDesc is not null) // P => P.Price
-				query = query.OrderByDescending(spec.OrderByDesc);
+				query = query.OrderByDescending(spec.OrderByDesc); //_dbcontext.Set<Order>().Where(O => O.BuyerEmail == buyerEmail)
 
 			if(spec.IsPaginationEnabled)
 				query = query.Skip(spec.Skip).Take(spec.Take);//_dbcontext.Set<Product>().Where(P=> True & True).OrderBy(P=>P.Name).Skip(5).Take(5);
