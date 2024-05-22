@@ -65,6 +65,21 @@ namespace Talabat.APIs.Controllers
 			return Ok(orders);
 
 		}
+		[Authorize(AuthenticationSchemes = "Bearer")]
+		[ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
+		[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+		[HttpGet("{id}")] //GET /api/Orders/1
+
+		public async Task<ActionResult<Order>> GetOrderForUser(int id)
+		{
+			var email = User.FindFirstValue(ClaimTypes.Email);
+			var order =  await _orderService.GetOrderByIdForUserAsync(id, email);
+
+			if (order is null)
+				return NotFound(new ApiResponse(404));
+
+			return Ok(order);
+		}
 
 	}
 }

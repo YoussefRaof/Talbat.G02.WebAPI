@@ -84,9 +84,13 @@ namespace Talabat.Service.OrderService
 			throw new NotImplementedException();
 		}
 
-		public Task<Order> GetOrderByIdForUserAsync(int orderId, string buyerEmail)
+		public Task<Order?> GetOrderByIdForUserAsync(int orderId, string buyerEmail)
 		{
-			throw new NotImplementedException();
+			var orderspec = new OrderSpecifications(orderId, buyerEmail);
+			var orderRepo= _unitOfWork.Repository<Order>();
+			var order = orderRepo.GetWithSpec(orderspec);
+			return order;
+
 		}
 
 		public Task<IReadOnlyList<Order>> GetOrdersForUserAsync(string buyerEmail)
