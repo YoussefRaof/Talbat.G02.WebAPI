@@ -12,7 +12,7 @@ using Talabat.Core.Specifications.OrderSpec;
 
 namespace Talabat.APIs.Controllers
 {
-	[ApiExplorerSettings(IgnoreApi = true)]
+	[ApiExplorerSettings(IgnoreApi = true)] // To Ignore Swagger Documentation 
 	public class OrdersController : BaseApiController
 	{
 		private readonly IOrderService _orderService;
@@ -27,13 +27,13 @@ namespace Talabat.APIs.Controllers
 
 		[Authorize(AuthenticationSchemes = "Bearer")]
 
-		[ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
+		[ProducesResponseType(typeof(OrderToReturnDto), StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
 		// To Ignore Swagger Documentation 
 		//POST  :  /api/Orders
 		[HttpPost]
 
-		public async Task<ActionResult<Order>> CreateOrder(OrderDto orderDto)
+		public async Task<ActionResult<OrderToReturnDto>> CreateOrder(OrderDto orderDto)
 		{
 
 			var address = _mapper.Map<AddressDto, Address>(orderDto.ShippingAddress);
@@ -45,14 +45,14 @@ namespace Talabat.APIs.Controllers
 			if (order is null)
 				return BadRequest(new ApiResponse(400));
 
-			return Ok(order);
+			return Ok(_mapper.Map<Order,OrderToReturnDto>(order));
 		}
 
 		[HttpGet]
 		[Authorize(AuthenticationSchemes = "Bearer")]
-		[ApiExplorerSettings(IgnoreApi = true)] // To Ignore Swagger Documentation 
+		
 
-		public async Task<ActionResult<IReadOnlyList<Order>>> GetOrdersForUser()
+		public async Task<ActionResult<IReadOnlyList<OrderToReturnDto>>> GetOrdersForUser()
 		{
 			var email = User.FindFirstValue(ClaimTypes.Email);
 
@@ -62,15 +62,15 @@ namespace Talabat.APIs.Controllers
 
 			
 
-			return Ok(orders);
+			return Ok(_mapper.Map<IReadOnlyList<Order>,IReadOnlyList<OrderToReturnDto>>(orders));
 
 		}
 		[Authorize(AuthenticationSchemes = "Bearer")]
-		[ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
+		[ProducesResponseType(typeof(OrderToReturnDto), StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
 		[HttpGet("{id}")] //GET /api/Orders/1
 
-		public async Task<ActionResult<Order>> GetOrderForUser(int id)
+		public async Task<ActionResult<OrderToReturnDto>> GetOrderForUser(int id)
 		{
 			var email = User.FindFirstValue(ClaimTypes.Email);
 			var order =  await _orderService.GetOrderByIdForUserAsync(id, email);
@@ -78,7 +78,7 @@ namespace Talabat.APIs.Controllers
 			if (order is null)
 				return NotFound(new ApiResponse(404));
 
-			return Ok(order);
+			return Ok(_mapper.Map<OrderToReturnDto>(order));
 		}
 
 	}
