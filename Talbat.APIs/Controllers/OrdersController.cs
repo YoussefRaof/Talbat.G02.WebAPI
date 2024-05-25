@@ -13,6 +13,9 @@ using Talabat.Core.Specifications.OrderSpec;
 namespace Talabat.APIs.Controllers
 {
 	[ApiExplorerSettings(IgnoreApi = true)] // To Ignore Swagger Documentation 
+
+	[Authorize(AuthenticationSchemes = "Bearer")]
+
 	public class OrdersController : BaseApiController
 	{
 		private readonly IOrderService _orderService;
@@ -25,7 +28,6 @@ namespace Talabat.APIs.Controllers
 		}
 
 
-		[Authorize(AuthenticationSchemes = "Bearer")]
 
 		[ProducesResponseType(typeof(OrderToReturnDto), StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
@@ -49,7 +51,6 @@ namespace Talabat.APIs.Controllers
 		}
 
 		[HttpGet]
-		[Authorize(AuthenticationSchemes = "Bearer")]
 		
 
 		public async Task<ActionResult<IReadOnlyList<OrderToReturnDto>>> GetOrdersForUser()
@@ -65,7 +66,6 @@ namespace Talabat.APIs.Controllers
 			return Ok(_mapper.Map<IReadOnlyList<Order>,IReadOnlyList<OrderToReturnDto>>(orders));
 
 		}
-		[Authorize(AuthenticationSchemes = "Bearer")]
 		[ProducesResponseType(typeof(OrderToReturnDto), StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
 		[HttpGet("{id}")] //GET /api/Orders/1
@@ -80,6 +80,16 @@ namespace Talabat.APIs.Controllers
 
 			return Ok(_mapper.Map<OrderToReturnDto>(order));
 		}
+
+		[HttpGet("deliveryMethods")] //GET /api/Orders/deliveryMethods
+
+		public async Task<ActionResult<IReadOnlyList<DeliveryMethod>>> GetDeliveryMethods()
+		{
+			var deliveryMethods = await _orderService.GetDeliveryMethodsAsync();
+
+			return Ok(deliveryMethods);
+		}
+
 
 	}
 }
